@@ -15,13 +15,15 @@ class MySQLDDLWatcher(object):
         "sys",
     ]
 
-    def __init__(self, host, port, database, user, password, charset='utf8mb4'):
+    def __init__(self, host, port, user, password, database=None, charset='utf8mb4'):
         self._host = host
         self._port = port
         self._database = database
         self._user = user
         self._password = password
         self._charset = charset
+
+        self._notification_handlers = []
 
         self._connect()
 
@@ -48,7 +50,7 @@ class MySQLDDLWatcher(object):
     def _dump_table(self, table_name):
         ret = dict()
 
-        table_descriptions = self._query("DESC {table_name};".format(table_name=table_name))
+        table_descriptions = self._query("SHOW FULL COLUMNS FROM `{table_name}`;".format(table_name=table_name))
         for table_description in table_descriptions:
             field = table_description["Field"]
             table_description.pop("Field")
@@ -92,18 +94,27 @@ class MySQLDDLWatcher(object):
             with open(filename, "w") as f:
                 f.write(json.dumps(info))
 
-    @abc.abstractmethod
     def _notification(self, diffs):
-        print(json.dumps(diffs, indent=2))
+        for handler in self._notification_handlers:
+            handler.notification(diffs)
+
+    def add_notification_handler(self, notification_handler):
+        self._notification_handlers.append(notification_handler)
 
     def watch(self):
         database_infos = dict()
-        databases = self._get_databases()
-        for database in databases:
-            database_name = database['Database']
-            if database_name in self.IGNORE_TABLES:
-                continue
 
+        if not self._database:
+            databases = self._get_databases()
+            for database in databases:
+                database_name = database['Database']
+                if database_name in self.IGNORE_TABLES:
+                    continue
+
+                database_info = self._dump_database(database_name)
+                database_infos[database_name] = database_info
+        else:
+            database_name = self._database
             database_info = self._dump_database(database_name)
             database_infos[database_name] = database_info
 
