@@ -12,6 +12,12 @@ package_dir = {
     'mysql_ddl_watcher': "src/"
 }
 
+install_requires = [
+    "pymysql",
+    "requests",
+    "jsondiff",
+]
+
 setup(
     name='mysql-ddl-watcher',
     version=__version__,
@@ -19,7 +25,7 @@ setup(
     author_email='stkook@gmail.com',
     license='MIT',
     url='https://github.com/stkook/mysql-ddl-watcher/tree/master',
-    install_requires=[],
+    install_requires=install_requires,
     test_requires=[],
     keywords='MySQL DDL Watcher',
     description='Detect changing MySQL DDL statement and notification changed information',
