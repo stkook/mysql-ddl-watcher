@@ -28,5 +28,5 @@ class SlackNotification(object):
         requests.post(self._hook_url, data=post_body)
 
     def notification(self, diffs):
-        text = "``` {text} ```".format(text=json.dumps(diffs, indent=2, ensure_ascii=False))
+        text = u"``` {text} ```".format(text=json.dumps(diffs, indent=2, ensure_ascii=False))
         self._notification(text)
