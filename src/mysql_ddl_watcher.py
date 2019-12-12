@@ -7,7 +7,7 @@ from jsondiff import diff
 
 
 class MySQLDDLWatcher(object):
-    INTERMEDIATE_DATA_PATH = "./.intermediate"
+    INTERMEDIATE_DATA_PATH = ".intermediate"
     SCHEME_FILE_FORMAT = INTERMEDIATE_DATA_PATH + "/{database}.ddlstate"
     IGNORE_TABLES = [
         "mysql",
