@@ -26,7 +26,6 @@ setup(
     license='MIT',
     url='https://github.com/stkook/mysql-ddl-watcher/tree/master',
     install_requires=install_requires,
-    test_requires=[],
     keywords='MySQL DDL Watcher',
     description='Detect changing MySQL DDL statement and notification changed information',
     packages=packages,
