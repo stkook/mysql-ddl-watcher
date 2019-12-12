@@ -2,12 +2,13 @@
 
 import pymysql
 import json
-import abc
+import os
 from jsondiff import diff
 
 
 class MySQLDDLWatcher(object):
-    SCHEME_FILE_FORMAT = "intermediate/{database}.ddlstate"
+    INTERMEDIATE_DATA_PATH = "./.intermediate"
+    SCHEME_FILE_FORMAT = INTERMEDIATE_DATA_PATH + "/{database}.ddlstate"
     IGNORE_TABLES = [
         "mysql",
         "information_schema",
@@ -24,6 +25,8 @@ class MySQLDDLWatcher(object):
         self._charset = charset
 
         self._notification_handlers = []
+
+        os.mkdir(self.INTERMEDIATE_DATA_PATH)
 
         self._connect()
 
