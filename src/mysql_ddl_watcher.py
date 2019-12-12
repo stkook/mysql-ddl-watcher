@@ -101,7 +101,7 @@ class MySQLDDLWatcher(object):
     def add_notification_handler(self, notification_handler):
         self._notification_handlers.append(notification_handler)
 
-    def watch(self):
+    def watch(self, notify=True):
         database_infos = dict()
 
         if not self._database:
@@ -118,5 +118,10 @@ class MySQLDDLWatcher(object):
             database_info = self._dump_database(database_name)
             database_infos[database_name] = database_info
 
-        self._diff_scheme(database_infos)
+        if notify:
+            self._diff_scheme(database_infos)
+
         self._make_checkpoint(database_infos)
+
+    def make_checkpoint(self):
+        self.watch(notify=False)

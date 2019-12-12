@@ -6,9 +6,11 @@ except ImportError:
 __author__ = 'ST <stkook@gmail.com>'
 __version__ = '1.0.0'
 
-packages = [
-    'src',
-]
+packages = ['mysql_ddl_watcher']
+
+package_dir = {
+    'mysql_ddl_watcher': "src/"
+}
 
 setup(
     name='mysql-ddl-watcher',
@@ -22,11 +24,12 @@ setup(
     keywords='MySQL DDL Watcher',
     description='Detect changing MySQL DDL statement and notification changed information',
     packages=packages,
+    package_dir=package_dir,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Topic :: Software Development :: Libraries :: Python Modules',
-        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ]
 )
