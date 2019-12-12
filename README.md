@@ -2,11 +2,17 @@
 
 Detect changing MySQL DDL statement and notification changed information
 
-You have to override your own notification method
+You can make your own notification handler
 
 ---
+
 ```python
-class MyWatcher(MySQLDDLWatcher):
-     def _notification(self, diffs):
+class MyHandler(object):
+     def notification(self, diffs):
         # do stuff
+
+watcher = MySQLDDLWatcher(...)        
+handler = MyHandler()
+watcher.add_notification_handler(handler)
+watcher.watch()
 ```
